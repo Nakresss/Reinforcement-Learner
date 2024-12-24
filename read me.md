@@ -1,73 +1,57 @@
-CartPole Deep Q-Learning Project
-Overview
-This project implements a Deep Q-Network (DQN) agent to solve the CartPole-v1 environment using reinforcement learning. The agent interacts with the environment, learns to balance a pole on a cart, and optimizes its actions through a neural network model. The project uses techniques such as Q-learning, experience replay, and epsilon-greedy exploration to improve the agent's performance over time.
+# Denge Ustası Uygulaması
 
-Technologies Used
-Python: The primary programming language used for the project.
-OpenAI Gym: A toolkit for developing and comparing reinforcement learning algorithms. It provides the CartPole-v1 environment used in this project.
-TensorFlow/Keras: A deep learning library used for creating the neural network that predicts Q-values for state-action pairs.
-NumPy: A package for numerical computing, used for efficient mathematical operations.
-Matplotlib: A plotting library used to visualize rewards, successes, and failures over time.
-Project Description
-In this project, we implement the Deep Q-Learning algorithm to solve the CartPole-v1 environment provided by OpenAI Gym. The objective is to balance a pole on a cart by applying left or right forces. The agent learns through trial and error and receives rewards for keeping the pole balanced.
+## Temel Amaç
 
-The agent's learning process involves the following components:
+"Denge Ustası", yapay zeka kullanarak "CartPole" ortamında bir direğin dengede durmasını öğrenen bir uygulamadır. Bu uygulama, bir vagonun üzerinde duran bir direği dengede tutmayı amaçlayan bir problem olan "CartPole" oyununu çözmek için takviyeli öğrenme (reinforcement learning) tekniklerini kullanır.
+![best](https://github.com/user-attachments/assets/b99a6f61-06d5-4b98-904c-859842faf899)
 
-Epsilon-Greedy Exploration: The agent explores the environment randomly (exploration) and exploits its learned knowledge (exploitation) using an epsilon-greedy strategy.
-Deep Q-Network: A neural network predicts the Q-values for each state-action pair. This helps the agent select the best actions based on past experiences.
-Q-Learning: The agent updates its Q-values based on the received rewards and the maximum future Q-value (temporal difference learning).
-Model Saving: The trained model is saved and can be loaded for future use or testing.
-The goal of this project is to train an agent that can successfully balance the pole for a given number of timesteps in the CartPole-v1 environment.
+## Çalışma Prensibi
 
-Installation
-Prerequisites
-To run the project, you need to have the following libraries installed:
+1.  **CartPole Ortamı:**
+    *   Uygulamamız, OpenAI'nin `gym` kütüphanesiyle sağlanan "CartPole-v1" ortamını kullanır.
+    *   Bu ortamda, bir vagon yatay bir çizgi üzerinde hareket edebilir ve bu vagonun üzerinde de bir direk durur.
+    *   Uygulamanın amacı, vagonu sağa veya sola hareket ettirerek direğin düşmesini engellemektir.
 
-Python 3.6 or higher
-TensorFlow
-Keras
-OpenAI Gym
-NumPy
-Matplotlib
-Install Dependencies
+2.  **Yapay Zeka Modeli:**
+    *   Uygulamamızda, bu denge problemini çözmek için bir yapay sinir ağı (neural network) modeli kullanılır. Bu model, TensorFlow/Keras kütüphaneleriyle oluşturulur.
+    *   Model, vagon ve direğin durumunu (pozisyon, hız gibi) girdi olarak alır ve vagonu hangi yöne hareket ettireceğine dair karar verir.
+    *   Modelimiz, girdi olarak durum bilgilerini alır.
+    *   Modelimiz, çıktı olarak iki aksiyon (sola git veya sağa git) için bir skor üretir.
 
-To install the required dependencies, you can use the following command:
-pip install -r requirements.txt
+3.  **Q-Öğrenme Algoritması:**
+    *   Modeli eğitmek için Q-öğrenme (Q-learning) algoritması kullanılır.
+    *   Q-öğrenme, bir ajanın (bizim modelimiz) etkileşimde bulunduğu ortamdan (CartPole) deneyimler yoluyla öğrenmesini sağlar.
+    *   Model, attığı her adımda bir ödül (reward) alır. Direği dengede tuttuğu sürece +1 ödül alır. Direk düştüğünde oyun biter.
+    *   Model, bu ödülleri kullanarak doğru aksiyonları öğrenir ve daha iyi denge performansı gösterir.
 
-Alternatively, you can install the dependencies individually using:
-pip install gym tensorflow numpy matplotlib
+4.  **Eğitim Süreci:**
+    *   Uygulama, belirli sayıda bölüm (episode) boyunca CartPole oyununu oynar.
+    *   Her bölüm sonunda, modelin performansı güncellenir ve model yeni deneyimlerden öğrenir.
+    *   Model, başlangıçta rastgele aksiyonlar seçerken, zamanla daha iyi bir strateji geliştirir ve direği daha uzun süre dengede tutmayı öğrenir.
+    *   `epsilon` parametresi ile rastgele aksiyon yapma ihtimali değiştirilerek öğrenmenin keşif ve sömürü aşaması dengelenir.
 
-Running the Project
-Clone the repository:
-git clone https://github.com/your-username/cartpole-dqn.git
-cd cartpole-dqn
+5.  **Performans Değerlendirmesi:**
+    *   Eğitim boyunca, uygulamanın performansı birkaç farklı metrikle takip edilir:
+        *   **Total Reward (Toplam Ödül):** Her bölüm sonunda alınan toplam ödül.
+        *   **Successes (Başarılar):** Direğin dengede tutulduğu adımların toplam sayısı.
+        *   **Failures (Başarısızlıklar):** Direğin düştüğü bölüm sayısı.
+    *   Bu metrikler, eğitim sürecinin ilerlemesini ve modelin ne kadar başarılı olduğunu görmemizi sağlar.
+    *   Bu metrikler, çizdirilen grafik ile görselleştirilir.
+    *   Tablo formatında her bölümdeki bu değerler aynı zamanda görülür.
 
-Run the main Python script to start training:
-python train.py
+## Uygulamanın Temel Özellikleri
 
-After training is complete, the model will be saved as best_cartpole_model.h5. You can use this model to test the agent's performance by running:
-python test.py
+*   **Yapay Zeka ile Takviyeli Öğrenme:** CartPole oyununu çözmek için takviyeli öğrenme yöntemleri kullanır.
+*   **Yapay Sinir Ağı:** Karar mekanizması için derin öğrenme modelini kullanır.
+*   **Q-Öğrenme:** Modeli eğitmek için Q-öğrenme algoritmasını kullanır.
+*   **Performans Takibi:** Eğitim sürecini görselleştirmek ve değerlendirmek için grafik ve tablo kullanır.
 
-Visualize the training process and results with Matplotlib plots (rewards, successes, and failures per episode).
+## Uygulamanın Kullanım Alanları
 
-How It Works
-Deep Q-Network (DQN): The agent uses a neural network with two hidden layers to approximate the Q-values. The input to the network is the state of the environment, and the output is the predicted Q-values for each action.
+*   **Takviyeli Öğrenme Eğitimi:** Takviyeli öğrenme algoritmalarını anlamak ve uygulamak için pratik bir araçtır.
+*   **Yapay Zeka Deneyleri:** Yapay zeka modelleriyle deneyler yapmak ve farklı parametrelerin etkilerini görmek için kullanılabilir.
+*   **Oyun Geliştirme:** Oyunlarda yapay zeka davranışlarını modellemek için kullanılabilir.
 
-Experience Replay: The agent stores past experiences in a replay buffer. During training, it randomly samples experiences from the buffer to break the correlation between consecutive experiences, which helps improve training stability.
+## Özet
 
-Epsilon Decay: The agent starts with a high epsilon value (exploration) and gradually decreases it to focus more on exploiting its learned knowledge (exploitation) as training progresses.
-
-Target Q-Value Update: The agent calculates the target Q-value for each state-action pair and updates its model based on the difference between the predicted and target Q-values.
-
-Rendering: The environment is rendered during the training process to visualize the agent’s actions. This helps in observing the agent's learning progress.
-
-Results
-After training, the agent should be able to balance the pole for a significant number of timesteps (typically 195 or more out of 200). The agent’s performance can be visualized through graphs showing rewards, successes, and failures for each episode.
-
-Future Improvements
-Experience Replay Optimization: Implementing prioritized experience replay to sample more informative experiences.
-Double DQN: Using two networks (target network and main network) to reduce overestimation bias in Q-value updates.
-Dueling DQN: Introducing separate value and advantage estimations to improve training efficiency.
-A3C / PPO Algorithms: Exploring advanced reinforcement learning algorithms such as A3C or PPO for improved performance.
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
+"Denge Ustası", basit bir oyun ortamında takviyeli öğrenme prensiplerini gösteren eğitici bir uygulamadır. Hem yeni başlayanlar hem de bu alanda deneyimi olan kişiler için pratik bir öğrenme aracıdır.
